@@ -66,6 +66,7 @@ float pySimilarityCore::doSimilarity_classify_gray_hist() {
 	}
 	return result;
 }
+
 float pySimilarityCore::doSimilarity_classify_hist_with_split(){
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSimilarity_classify_hist_with_split");
 	if (!pv || !PyCallable_Check(pv))  // 验证是否加载成功
@@ -94,6 +95,7 @@ float pySimilarityCore::doSimilarity_classify_hist_with_split(){
 	}
 	return result;
 }
+
 int pySimilarityCore::doSimilarity_classify_aHash() {
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSimilarity_classify_aHash");
 	if (!pv || !PyCallable_Check(pv))  // 验证是否加载成功
@@ -122,6 +124,7 @@ int pySimilarityCore::doSimilarity_classify_aHash() {
 	}
 	return result;
 }
+
 int pySimilarityCore::doSimilarity_classify_pHash() {
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSimilarity_classify_pHash");
 	if (!pv || !PyCallable_Check(pv))  // 验证是否加载成功
@@ -147,6 +150,64 @@ int pySimilarityCore::doSimilarity_classify_pHash() {
 	}
 	else {
 		qDebug() << "获取失败" ;
+	}
+	return result;
+}
+
+int pySimilarityCore::doSift() {
+	PyObject* pv = PyObject_GetAttrString(pModule, "doSift");
+	if (!pv || !PyCallable_Check(pv))  // 验证是否加载成功
+	{
+		qDebug() << "[ERROR] Can't find funftion (doSift)";
+	}
+	qDebug() << "[INFO] Get function (doSift) succeed.";
+
+	// 设置参数
+	PyObject* args = PyTuple_New(2);   // 2个参数
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // 参数一
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // 参数二
+	PyTuple_SetItem(args, 0, arg1);
+	PyTuple_SetItem(args, 1, arg2);
+
+	// 调用函数
+	PyObject* pRet = PyObject_CallObject(pv, args);
+
+	int result;
+	if (pRet) {
+		PyArg_Parse(pRet, "i", &result);//int型变量
+		qDebug() << "Sift特征匹配点数:" << result;
+	}
+	else {
+		qDebug() << "获取失败";
+	}
+	return result;
+}
+
+int pySimilarityCore::doSurf() {
+	PyObject* pv = PyObject_GetAttrString(pModule, "doSurf");
+	if (!pv || !PyCallable_Check(pv))  // 验证是否加载成功
+	{
+		qDebug() << "[ERROR] Can't find funftion (doSurf)";
+	}
+	qDebug() << "[INFO] Get function (doSurf) succeed.";
+
+	// 设置参数
+	PyObject* args = PyTuple_New(2);   // 2个参数
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // 参数一
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // 参数二
+	PyTuple_SetItem(args, 0, arg1);
+	PyTuple_SetItem(args, 1, arg2);
+
+	// 调用函数
+	PyObject* pRet = PyObject_CallObject(pv, args);
+
+	int result;
+	if (pRet) {
+		PyArg_Parse(pRet, "i", &result);//int型变量
+		qDebug() << "Surf特征匹配点数:" << result;
+	}
+	else {
+		qDebug() << "获取失败";
 	}
 	return result;
 }

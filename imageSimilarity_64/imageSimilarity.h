@@ -22,27 +22,30 @@ public:
 	imageSimilarity(QWidget *parent = Q_NULLPTR);
 	~imageSimilarity();
 
-	static bool sortMethod_gray_hist(imageInfo, imageInfo);
-	static bool sortMethod_hist_split(imageInfo, imageInfo);
-	static bool sortMethod_pHash(imageInfo, imageInfo);
-	static bool sortMethod_aHash(imageInfo, imageInfo);
-	
+	static bool sortMethod_gray_hist(imageInfo *, imageInfo *);
+	static bool sortMethod_hist_split(imageInfo *, imageInfo *);
+	static bool sortMethod_pHash(imageInfo *, imageInfo *);
+	static bool sortMethod_aHash(imageInfo *, imageInfo *);
+	static bool sortMethod_sift(imageInfo *, imageInfo *);
+	static bool sortMethod_surf(imageInfo *, imageInfo *);
+
 private slots:
 	void open();
 	void similar();
-	void showLabel();
+	//void showLabel();
 	void chooseSortMethod(int);
 	void showLastPage();
 	void showNextPage();
 	void chooseImageLib();
-	void showImageInfo(imageInfo);
+	void showImageInfo(imageInfo*);
 signals:
 
 private:
 	Ui::imageSimilarityClass *ui;
 	QString filename;
 	QImage srcQimage;
-	vector<imageInfo> imagelibs;
+	QFileInfoList list;
+	vector<imageInfo*> imagelibs;
 	int imageCount;//图片库总量
 	int pageNum;//页数
 	int nowPage;//当前页

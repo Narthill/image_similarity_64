@@ -16,6 +16,9 @@ public:
 	float doSimilarity_classify_hist_with_split();
 	int doSimilarity_classify_aHash();
 	int doSimilarity_classify_pHash();
+	int doSift();
+	int doSurf();
+
 private:
 	string image1Path;
 	string image2Path;

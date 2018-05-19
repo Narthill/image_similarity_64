@@ -17,6 +17,58 @@ class similarityWorker(object):
         self.__imageOne = cv2.imread(image1Path)
         self.__imageTwo = cv2.imread(image2Path)
 
+    #sift
+    def sift_detect(self):
+        print ("sift detector......")
+        sift = cv2.xfeatures2d.SIFT_create()
+
+        # find the keypoints and descriptors with SIFT
+        # image1 = cv2.cvtColor(self.__imageOne, cv2.COLOR_BGR2GRAY)
+        # image2 = cv2.cvtColor(self.__imageTwo, cv2.COLOR_BGR2GRAY)
+        kp1, des1 = sift.detectAndCompute(self.__imageOne, None)
+        kp2, des2 = sift.detectAndCompute(self.__imageTwo, None)
+
+        # BFMatcher with default params
+        bf = cv2.BFMatcher()
+        matches = bf.knnMatch(des1, des2, k=2)
+        #print(matches)#matches两维
+        # Apply ratio
+        good = [[m] for m, n in matches if m.distance < 0.5 * n.distance]
+        # 等同于    good = []
+        # for m,n in matches:
+        #     if m.distance < 0.75*n.distance:
+        #         good.append([m])
+        #print(len(good))
+        # cv2.drawMatchesKnn expects list of lists as matches.
+        #img3 = cv2.drawMatchesKnn(image1, kp1, image2, kp2, good, None, flags=2)
+        #cv2.imshow("img",img3)
+        return len(good)
+
+    #surf
+    def surf_detect(self):
+        print ("surf detector......")
+        surf = cv2.xfeatures2d.SURF_create()
+
+        # find the keypoints and descriptors with SIFT
+        kp1, des1 = surf.detectAndCompute(self.__imageOne, None)
+        kp2, des2 = surf.detectAndCompute(self.__imageTwo, None)
+
+        # BFMatcher with default params
+        bf = cv2.BFMatcher()
+        matches = bf.knnMatch(des1, des2, k=2)
+        #print(matches)#matches两维
+        # Apply ratio
+        good = [[m] for m, n in matches if m.distance < 0.5 * n.distance]
+        # 等同于    good = []
+        # for m,n in matches:
+        #     if m.distance < 0.75*n.distance:
+        #         good.append([m])
+        #print(len(good))
+        # cv2.drawMatchesKnn expects list of lists as matches.
+        # img3 = cv2.drawMatchesKnn(self.__imageOne, kp1, self.__imageTwo, kp2, good, None, flags=2)
+        # cv2.imshow("img2",img3)
+        return len(good)
+
     def classify_gray_hist(self, size=(256, 256)):
         # 先计算直方图
         # 几个参数必须用方括号括起来
@@ -138,19 +190,20 @@ class similarityWorker(object):
                 num += 1
         return num
 
+#以下为各相似度算法的调用函数
 def doSimilarity_classify_gray_hist(image1Path,image2Path):
     # image1Path=image1Path.decode('gbk');
     # image2Path=image2Path.decode('gbk');
     sm=similarityWorker(image1Path,image2Path)
     #print "similarityWorker.__doc__:", (similarityWorker.__doc__).decode('utf-8').encode('gbk')#python设置为utf-8编码，要windows cmd正常输出需要解码之后再gbk编码
     degree = sm.classify_gray_hist()
-    print ("基于灰度化直方图相似度:",degree)
+    print ("gray_hist:",degree)
     return degree
 
 def doSimilarity_classify_hist_with_split(image1Path,image2Path):
     sm=similarityWorker(image1Path,image2Path)
     degree = sm.classify_hist_with_split()
-    print ("分离各通道直方图后的相似度:",degree)
+    print ("hist_with_split:",degree)
     return degree
 
 def doSimilarity_classify_aHash(image1Path,image2Path):
@@ -165,7 +218,22 @@ def doSimilarity_classify_pHash(image1Path,image2Path):
     print ('pHash:',degree)
     return degree
 
+def doSift(image1Path,image2Path):
+    sm=similarityWorker(image1Path,image2Path)
+    goodPoint=sm.sift_detect();
+    print ('SiftPoint:',goodPoint)
+    return goodPoint
+
+def doSurf(image1Path,image2Path):
+    sm=similarityWorker(image1Path,image2Path)
+    goodPoint=sm.surf_detect();
+    print ('SurfPoint:',goodPoint)
+    return goodPoint
+
 #D:\Software\Anaconda2\Scripts\pyinstaller -F E:\Item\Python\imageSim\seemImg.py
-if __name__ == '__main__':
-   doSimilarity_classify_gray_hist("imag/1.jpg","imag/0.jpg");
-   doSimilarity_classify_aHash("imag/0.jpg","imag/1.jpg");
+# if __name__ == '__main__':
+# # #    doSimilarity_classify_gray_hist("imag/1.jpg","imag/0.jpg");
+# # #    doSimilarity_classify_aHash("imag/0.jpg","imag/1.jpg");
+#     doSift("imag/2.jpg","imag/0.jpg")
+#     doSurf("imag/2.jpg","imag/0.jpg")
+#     cv2.waitKey()

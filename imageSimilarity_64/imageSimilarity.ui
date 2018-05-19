@@ -6,27 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1074</width>
-    <height>735</height>
+    <width>1116</width>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>imageSimilarity</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_5">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout" stretch="4,4,1">
+     <layout class="QVBoxLayout" name="verticalLayout_4" stretch="4,4,1">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
         <item>
-         <widget class="QLabel" name="SrcImgView">
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(255, 255, 255)</string>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>原图</string>
           </property>
-          <property name="text">
-           <string/>
-          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="SrcImgView">
+             <property name="styleSheet">
+              <string notr="true">background-color:rgb(255, 255, 255)</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
@@ -62,6 +71,16 @@
                  <string>感知哈希</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>sift特征匹配</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>surf特征匹配</string>
+                </property>
+               </item>
               </widget>
              </item>
              <item>
@@ -88,51 +107,60 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,1">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetDefaultConstraint</enum>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>相似图</string>
         </property>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(255, 255, 255)</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(255, 255, 255)</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(255, 255, 255)</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(255, 255, 255)</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,1">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetDefaultConstraint</enum>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string notr="true">background-color:rgb(255, 255, 255)</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="styleSheet">
+              <string notr="true">background-color:rgb(255, 255, 255)</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="styleSheet">
+              <string notr="true">background-color:rgb(255, 255, 255)</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="styleSheet">
+              <string notr="true">background-color:rgb(255, 255, 255)</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -187,7 +215,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1074</width>
+     <width>1116</width>
      <height>23</height>
     </rect>
    </property>

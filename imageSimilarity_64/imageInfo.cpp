@@ -3,11 +3,16 @@ imageInfo::imageInfo()
 {
 
 }
-
+imageInfo::imageInfo(const imageInfo& info) {
+	//this->path = info.path;
+}
 imageInfo::~imageInfo()
 {
 }
-
+imageInfo imageInfo::operator =(const imageInfo& info) {
+	/*this->path = info.path;
+	return *this;*/
+}
 void imageInfo::setPath(string p) {
 	path = p;
 }
@@ -25,6 +30,14 @@ void imageInfo::setClassify_pHash(int p) {
 	pHash = p;
 }
 
+void imageInfo::setSift_point(int goodPoint) {
+	siftPoint = goodPoint;
+}
+void imageInfo::setSurf_point(int goodPoint) {
+	surfPoint = goodPoint;
+}
+
+
 string imageInfo::getPath() {
 	return path;
 }
@@ -39,4 +52,11 @@ int imageInfo::getClassify_aHash() {
 }
 int imageInfo::getClassify_pHash() {
 	return pHash;
+}
+
+int imageInfo::getSift_point() {
+	return siftPoint;
+}
+int imageInfo::getSurf_point() {
+	return surfPoint;
 }

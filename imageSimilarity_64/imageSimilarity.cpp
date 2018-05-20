@@ -10,18 +10,18 @@ imageSimilarity::imageSimilarity(QWidget *parent)
 	ui = new Ui::imageSimilarityClass;
 	ui->setupUi(this);
 
-	//´ò¿ªµÚÒ»ÕÅÍ¼ÏñĞÅºÅ²Û
+	//æ‰“å¼€ç¬¬ä¸€å¼ å›¾åƒä¿¡å·æ§½
 	QObject::connect(ui->actionOpen, &QAction::triggered, this, &imageSimilarity::open);
-	//Í¼Ïñ¿â´¦ÀíĞÅºÅ²Û
+	//å›¾åƒåº“å¤„ç†ä¿¡å·æ§½
 	QObject::connect(ui->actionSimilar, &QAction::triggered, this, &imageSimilarity::similar);
-	//Ñ¡ÔñÍ¼Ïñ¿âĞÅºÅ²Û
+	//é€‰æ‹©å›¾åƒåº“ä¿¡å·æ§½
 	QObject::connect(ui->actionImportLib, &QAction::triggered, this, &imageSimilarity::chooseImageLib);
 
-	//Õ¹Ê¾ÉÏÒ»Ò³Í¼Ïñ
+	//å±•ç¤ºä¸Šä¸€é¡µå›¾åƒ
 	QObject::connect(ui->lastPageBtn, &QPushButton::clicked , this, &imageSimilarity::showLastPage);
-	//ÏÂÒ»Ò³
+	//ä¸‹ä¸€é¡µ
 	QObject::connect(ui->nextPageBtn, &QPushButton::clicked, this, &imageSimilarity::showNextPage);
-	//comboBox±»¸Ä±ä
+	//comboBoxè¢«æ”¹å˜
 	QObject::connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(chooseSortMethod(int)));
 
 	ui->actionSimilar->setEnabled(false);
@@ -33,16 +33,16 @@ imageSimilarity::~imageSimilarity()
 	delete ui;
 }
 void imageSimilarity::open() {
-	//µ÷ÓÃ´°¿Ú´ò¿ªÎÄ¼ş
+	//è°ƒç”¨çª—å£æ‰“å¼€æ–‡ä»¶
 	filename = QFileDialog::getOpenFileName(this,
-		tr("´ò¿ªÍ¼Æ¬"),
+		tr("æ‰“å¼€å›¾ç‰‡"),
 		".",
 		tr("Image file(*.png *.jpg *.bmp)"));
 	p1 = filename.toStdString();
 
 	if (!filename.isEmpty()) {
 		ui->SrcImgView->clear();
-		//QImage¼ÓÔØ³É¹¦ÔòÕ¹Ê¾
+		//QImageåŠ è½½æˆåŠŸåˆ™å±•ç¤º
 		if (srcQimage.load(filename)) {
 			ui->actionSimilar->setEnabled(true);
 
@@ -50,21 +50,21 @@ void imageSimilarity::open() {
 			int height = ui->SrcImgView->height();
 			QPixmap pixmap = QPixmap::fromImage(srcQimage);
 			QPixmap fitpixmap = pixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-			//Qt::IgnoreAspectRatio, Qt::SmoothTransformation Ìî³ä Qt::KeepAspectRatio, Qt::SmoothTransformation °´±ÈÀı
+			//Qt::IgnoreAspectRatio, Qt::SmoothTransformation å¡«å…… Qt::KeepAspectRatio, Qt::SmoothTransformation æŒ‰æ¯”ä¾‹
 			ui->SrcImgView->setPixmap(fitpixmap);
-			nowPage = -1;//µ±Ç°Ò³Îª-1
+			nowPage = -1;//å½“å‰é¡µä¸º-1
 		}
 		else {
 			ui->actionSimilar->setEnabled(false);
 			QMessageBox::information(this,
-				tr("²Ù×÷Ê§°Ü"),
-				tr("Í¼Æ¬´ò¿ªÊ§°Ü!"));
+				tr("æ“ä½œå¤±è´¥"),
+				tr("å›¾ç‰‡æ‰“å¼€å¤±è´¥!"));
 			return;
 		}
 	}
 }
 void imageSimilarity::chooseImageLib() {
-	path = QFileDialog::getExistingDirectory(NULL, tr("Ñ¡ÔñÍ¼Ïñ¿âÎÄ¼ş¼Ğ"), "", QFileDialog::ShowDirsOnly);
+	path = QFileDialog::getExistingDirectory(NULL, tr("é€‰æ‹©å›¾åƒåº“æ–‡ä»¶å¤¹"), "", QFileDialog::ShowDirsOnly);
 	//qDebug() << path;
 	QDir *dir = new QDir(path);
 	QStringList filter;
@@ -72,18 +72,18 @@ void imageSimilarity::chooseImageLib() {
 	dir->setNameFilters(filter);
 	list = dir->entryInfoList();
 	imageCount = list.size();
-	pageNum = ceil(imageCount / 4.0);//×ÜÒ³Êı,ÏòÉÏÈ¡Õû
-	nowPage = -1;////Í¼Æ¬¿â´¦ÀíÊ±£¬Í¼Æ¬Ò³ÖÃÎ»
+	pageNum = ceil(imageCount / 4.0);//æ€»é¡µæ•°,å‘ä¸Šå–æ•´
+	nowPage = -1;////å›¾ç‰‡åº“å¤„ç†æ—¶ï¼Œå›¾ç‰‡é¡µç½®ä½
 	ui->comboBox->setEnabled(true);
 }
 void imageSimilarity::similar() {
-	if (path.isEmpty() || path.isNull()) {//ÅĞ¶ÏÊÇ·ñµ¼ÈëÍ¼Ïñ¿â
+	if (path.isEmpty() || path.isNull()) {//åˆ¤æ–­æ˜¯å¦å¯¼å…¥å›¾åƒåº“
 		chooseImageLib();
 	}
 
 	if (imagelibs.size() != 0) {
 		std::vector<imageInfo*>::iterator iter = imagelibs.begin();
-		//ÊÍ·Åµô¶¯Ì¬Êı×éËù±£´æµÄÖ¸ÕëÖ¸ÏòÇøÓòµÄ¶ÔÏó
+		//é‡Šæ”¾æ‰åŠ¨æ€æ•°ç»„æ‰€ä¿å­˜çš„æŒ‡é’ˆæŒ‡å‘åŒºåŸŸçš„å¯¹è±¡
 		for (; iter != imagelibs.end(); ++iter)
 		{
 			delete *iter; 
@@ -92,72 +92,72 @@ void imageSimilarity::similar() {
 	}
 	ui->textEdit->clear();
 
-	//Èç¹û¸ÃÍ¼Ïñ¿âÖĞÓĞjpgÍ¼Ïñ
+	//å¦‚æœè¯¥å›¾åƒåº“ä¸­æœ‰jpgå›¾åƒ
 	if (list.length() != 0) {
-		//±éÀú´ı´¦ÀíÍ¼¿â
+		//éå†å¾…å¤„ç†å›¾åº“
 		for (int i = 0; i < list.size(); i++) {
-			//ÊµÀı»¯pyÍ¼ÏñÏàËÆ¶È´¦Àí¶ÔÏó£¬½«´ı±È½ÏµÄµÚÒ»ÕÅÍ¼ÏñÂ·¾¶µ¼Èë
+			//å®ä¾‹åŒ–pyå›¾åƒç›¸ä¼¼åº¦å¤„ç†å¯¹è±¡ï¼Œå°†å¾…æ¯”è¾ƒçš„ç¬¬ä¸€å¼ å›¾åƒè·¯å¾„å¯¼å…¥
 			pySimilarityCore *core = new pySimilarityCore(p1);
-			//µÚ¶şÕÅÍ¼ÏñµÄÂ·¾¶£¬ËæÑ­»·¸Ä±ä
+			//ç¬¬äºŒå¼ å›¾åƒçš„è·¯å¾„ï¼Œéšå¾ªç¯æ”¹å˜
 			QString pathJpg = path + "/" + list.at(i).fileName();
-			//ÎÄ±¾¿òÒ»Ö±ÏòÏÂ¹ö¶¯
+			//æ–‡æœ¬æ¡†ä¸€ç›´å‘ä¸‹æ»šåŠ¨
 			QScrollBar *scrollbar = ui->textEdit->verticalScrollBar();
 			if (scrollbar) {
 				scrollbar->setSliderPosition(scrollbar->maximum());
 			}
 			QApplication::processEvents();
 
-			ui->textEdit->insertPlainText("Í¼Æ¬:" + pathJpg + "\nÕıÔÚ½øĞĞÏàËÆ¶È·ÖÎö...\n");
-			statusBar()->showMessage(tr("ÕıÔÚ¶ÔÍ¼Ïñ¿â½øĞĞ·ÖÎö..."));
+			ui->textEdit->insertPlainText("å›¾ç‰‡:" + pathJpg + "\næ­£åœ¨è¿›è¡Œç›¸ä¼¼åº¦åˆ†æ...\n");
+			statusBar()->showMessage(tr("æ­£åœ¨å¯¹å›¾åƒåº“è¿›è¡Œåˆ†æ..."));
 
-			//ÉèÖÃ´¦Àí¶ÔÏóÖĞµÚ¶şÕÅÍ¼µÄÂ·¾¶
+			//è®¾ç½®å¤„ç†å¯¹è±¡ä¸­ç¬¬äºŒå¼ å›¾çš„è·¯å¾„
 			core->getPath2(pathJpg.toStdString());
 
-			//ÒÔÏÂ½øĞĞÍ¼Ïñ´¦Àí²¢ĞÅÏ¢±£´æ
+			//ä»¥ä¸‹è¿›è¡Œå›¾åƒå¤„ç†å¹¶ä¿¡æ¯ä¿å­˜
 			imageInfo *info = new imageInfo();
-			//»Ò¶ÈÍ¼µÄÖ±·½Í¼±È½Ï
-			ui->textEdit->insertPlainText("»Ò¶ÈÍ¼Ö±·½Í¼±È½Ï...\n");
+			//ç°åº¦å›¾çš„ç›´æ–¹å›¾æ¯”è¾ƒ
+			ui->textEdit->insertPlainText("ç°åº¦å›¾ç›´æ–¹å›¾æ¯”è¾ƒ...\n");
 			info->setClassify_gray_hist(core->doSimilarity_classify_gray_hist());
-			//·ÖÀëÈıÍ¨µÀµÄÖ±·½Í¼±È½Ï
-			ui->textEdit->insertPlainText("·ÖÀëÈıÍ¨µÀµÄÖ±·½Í¼±È½Ï...\n");
+			//åˆ†ç¦»ä¸‰é€šé“çš„ç›´æ–¹å›¾æ¯”è¾ƒ
+			ui->textEdit->insertPlainText("åˆ†ç¦»ä¸‰é€šé“çš„ç›´æ–¹å›¾æ¯”è¾ƒ...\n");
 			info->setClassify_hist_with_split(core->doSimilarity_classify_hist_with_split());
-			//Æ½¾ùhash
-			ui->textEdit->insertPlainText("Æ½¾ùhash...\n");
+			//å¹³å‡hash
+			ui->textEdit->insertPlainText("å¹³å‡hash...\n");
 			info->setClassify_aHash(core->doSimilarity_classify_aHash());
-			//¸ĞÖªhash
-			ui->textEdit->insertPlainText("¸ĞÖªhash...\n");
+			//æ„ŸçŸ¥hash
+			ui->textEdit->insertPlainText("æ„ŸçŸ¥hash...\n");
 			info->setClassify_pHash(core->doSimilarity_classify_pHash());
 			
 			if (ui->checkBox_sift->isChecked() == true) {
-				//siftÌØÕ÷Æ¥Åä
-				ui->textEdit->insertPlainText("siftÌØÕ÷Æ¥ÅäÖĞ...\n");
+				//siftç‰¹å¾åŒ¹é…
+				ui->textEdit->insertPlainText("siftç‰¹å¾åŒ¹é…ä¸­...\n");
 				info->setSift_point(core->doSift());
 			}
 			if (ui->checkBox_surf->isChecked() == true) {
-				//surfÌØÕ÷Æ¥Åä
-				ui->textEdit->insertPlainText("surfÌØÕ÷Æ¥ÅäÖĞ...\n");
+				//surfç‰¹å¾åŒ¹é…
+				ui->textEdit->insertPlainText("surfç‰¹å¾åŒ¹é…ä¸­...\n");
 				info->setSurf_point(core->doSurf());
 			}
-			//Ã¿ÕÅÍ¼ÏñµÄÂ·¾¶±£´æµ½Í¼ÏñĞÅÏ¢¶ÔÏóÖĞ
+			//æ¯å¼ å›¾åƒçš„è·¯å¾„ä¿å­˜åˆ°å›¾åƒä¿¡æ¯å¯¹è±¡ä¸­
 			info->setPath(pathJpg.toStdString());
 
-			Py_Initialize();//¹Ø±Õpy»·¾³
-			imagelibs.push_back(info);//µ¼Èë´æ´¢Í¼ÏñÏàËÆ¶ÈĞÎÏóµÄ¶¯Ì¬Êı×é
-			ui->textEdit->insertPlainText("·ÖÎöÍê±Ï£¡\n\n");			
+			Py_Initialize();//å…³é—­pyç¯å¢ƒ
+			imagelibs.push_back(info);//å¯¼å…¥å­˜å‚¨å›¾åƒç›¸ä¼¼åº¦å½¢è±¡çš„åŠ¨æ€æ•°ç»„
+			ui->textEdit->insertPlainText("åˆ†æå®Œæ¯•ï¼\n\n");			
 			delete core;
 		}
 	}
 	else{
 		qDebug() << "no file";
 	}
-	statusBar()->showMessage(tr("Í¼Ïñ¿â´¦ÀíÍê±Ï£¡"));
+	statusBar()->showMessage(tr("å›¾åƒåº“å¤„ç†å®Œæ¯•ï¼"));
 	int choose = ui->comboBox->currentIndex();
-	//ËæÑ¡ÔñµÄÏàËÆ¶È´¦ÀíËã·¨ÅÅĞò
+	//éšé€‰æ‹©çš„ç›¸ä¼¼åº¦å¤„ç†ç®—æ³•æ’åº
 	chooseSortMethod(choose);
 	
 }
 
-//ÅÅĞò
+//æ’åº
 void imageSimilarity::chooseSortMethod(int choose) {
 	if (imagelibs.size()>0) {
 		if (choose == 0) {
@@ -179,18 +179,18 @@ void imageSimilarity::chooseSortMethod(int choose) {
 			std::sort(imagelibs.begin(), imagelibs.end(), &imageSimilarity::sortMethod_surf);
 		}
 
-		//¸Ä±äÏàËÆ¶È·½·¨Ê±£¬Í¼Æ¬Ò³ÖÃÎ»
+		//æ”¹å˜ç›¸ä¼¼åº¦æ–¹æ³•æ—¶ï¼Œå›¾ç‰‡é¡µç½®ä½
 		nowPage = -1;
 		showNextPage();
 	}else{
-		qDebug() << "»¹Î´´¦ÀíÍ¼Ïñ";
+		qDebug() << "è¿˜æœªå¤„ç†å›¾åƒ";
 	}
 }
 
 void imageSimilarity::showLastPage() {
 	if (nowPage > 0) {
 		nowPage--;
-		statusBar()->showMessage(tr("×ÜÒ³Êı:") + QString::number(pageNum, 10) + tr("/") + tr("µ±Ç°Ò³:") + QString::number(nowPage + 1, 10));
+		statusBar()->showMessage(tr("æ€»é¡µæ•°:") + QString::number(pageNum, 10) + tr("/") + tr("å½“å‰é¡µ:") + QString::number(nowPage + 1, 10));
 		ui->textEdit->clear();
 		int width = ui->label->width();
 		int height = ui->label->height();
@@ -214,12 +214,12 @@ void imageSimilarity::showLastPage() {
 	}
 }
 
-//Õ¹Ê¾ÏÂÒ»Ò³
+//å±•ç¤ºä¸‹ä¸€é¡µ
 void imageSimilarity::showNextPage() {
 	if (nowPage < pageNum-1) {
 		nowPage++;
-		statusBar()->showMessage(tr("×ÜÒ³Êı:")+ QString::number(pageNum,10)+tr("/")+tr("µ±Ç°Ò³:") + QString::number(nowPage+1, 10));
-		ui->textEdit->clear();//Çå¿ÕĞÅÏ¢¿ò
+		statusBar()->showMessage(tr("æ€»é¡µæ•°:")+ QString::number(pageNum,10)+tr("/")+tr("å½“å‰é¡µ:") + QString::number(nowPage+1, 10));
+		ui->textEdit->clear();//æ¸…ç©ºä¿¡æ¯æ¡†
 		int width = ui->label->width();
 		int height = ui->label->height();
 		//qDebug() << QString::fromStdString((imagelibs.begin())->getPath());
@@ -243,13 +243,13 @@ void imageSimilarity::showNextPage() {
 }
 
 void imageSimilarity::showImageInfo(imageInfo *img) {
-	ui->textEdit->insertPlainText("Í¼Æ¬Â·¾¶:" + QString::fromStdString(img->getPath()) + "\n");
-	ui->textEdit->insertPlainText("»Ò¶ÈÖ±·½Í¼±È½Ï:" + QString::number(img->getClassify_gray_hist(), 'f') + "\n");
-	ui->textEdit->insertPlainText("ÈıÍ¨µÀ·ÖÀë±È½Ï:" + QString::number(img->getClassify_hist_with_split(), 'f') + "\n");
+	ui->textEdit->insertPlainText("å›¾ç‰‡è·¯å¾„:" + QString::fromStdString(img->getPath()) + "\n");
+	ui->textEdit->insertPlainText("ç°åº¦ç›´æ–¹å›¾æ¯”è¾ƒ:" + QString::number(img->getClassify_gray_hist(), 'f') + "\n");
+	ui->textEdit->insertPlainText("ä¸‰é€šé“åˆ†ç¦»æ¯”è¾ƒ:" + QString::number(img->getClassify_hist_with_split(), 'f') + "\n");
 	ui->textEdit->insertPlainText("aHash:" + QString::number(img->getClassify_aHash(), 10) + "\n");
 	ui->textEdit->insertPlainText("pHash:" + QString::number(img->getClassify_pHash(), 10) + "\n");
-	ui->textEdit->insertPlainText("siftÌØÕ÷Æ¥ÅäµãÊı:" + QString::number(img->getSift_point(), 10) + "\n");
-	ui->textEdit->insertPlainText("surfÌØÕ÷Æ¥ÅäµãÊı:" + QString::number(img->getSurf_point(), 10) + "\n\n");
+	ui->textEdit->insertPlainText("siftç‰¹å¾åŒ¹é…ç‚¹æ•°:" + QString::number(img->getSift_point(), 10) + "\n");
+	ui->textEdit->insertPlainText("surfç‰¹å¾åŒ¹é…ç‚¹æ•°:" + QString::number(img->getSurf_point(), 10) + "\n\n");
 	QApplication::processEvents();
 }
 

@@ -1,26 +1,26 @@
 #include "pySimilarityCore.h"
 pySimilarityCore::pySimilarityCore(string Path1) {
 	image1Path = Path1;
-	//Py_Initialize();    // ³õÊ¼»¯
+	//Py_Initialize();    // åˆå§‹åŒ–
 
-	// ½«Python¹¤×÷Â·¾¶ÇĞ»»µ½´ıµ÷ÓÃÄ£¿éËùÔÚÄ¿Â¼£¬Ò»¶¨Òª±£Ö¤Â·¾¶ÃûµÄÕıÈ·ĞÔ
-	string path = "E:/Item/C++/imageSimilarity_64/imageSimilarity_64";  //pythonÎÄ¼şÂ·¾¶  
+	// å°†Pythonå·¥ä½œè·¯å¾„åˆ‡æ¢åˆ°å¾…è°ƒç”¨æ¨¡å—æ‰€åœ¨ç›®å½•ï¼Œä¸€å®šè¦ä¿è¯è·¯å¾„åçš„æ­£ç¡®æ€§
+	string path = "E:/Item/C++/imageSimilarity_64/imageSimilarity_64";  //pythonæ–‡ä»¶è·¯å¾„  
 
-	//³õÊ¼»¯Python»·¾³  
+	//åˆå§‹åŒ–Pythonç¯å¢ƒ  
 	Py_Initialize();
 	PyRun_SimpleString("import sys");
 	string chdir_cmd = string("sys.path.append(\"");
 	chdir_cmd += path;
 	chdir_cmd += "\")";
 
-	//PyRun_SimpleString("")¿ÉÒÔ¼òµ¥µÄÖ±½ÓÔËĞĞ×Ö·û´®ÄÚµÄPythonÓï¾ä  
+	//PyRun_SimpleString("")å¯ä»¥ç®€å•çš„ç›´æ¥è¿è¡Œå­—ç¬¦ä¸²å†…çš„Pythonè¯­å¥  
 	const char* cstr_cmd = chdir_cmd.c_str();
-	//Ìí¼ÓInsertÄ£¿éÂ·¾¶  
+	//æ·»åŠ Insertæ¨¡å—è·¯å¾„  
 	PyRun_SimpleString(cstr_cmd);
 
 	//PyObject* fname = PyUnicode_FromString("pyadd");
-	pModule = PyImport_ImportModule("seemImg_py3_64");//GameState:PythonÎÄ¼şÃû
-	if (!pModule) // ¼ÓÔØÄ£¿éÊ§°Ü
+	pModule = PyImport_ImportModule("seemImg_py3_64");//GameState:Pythonæ–‡ä»¶å
+	if (!pModule) // åŠ è½½æ¨¡å—å¤±è´¥
 	{
 		qDebug() << "[ERROR] Python get module failed." ;
 	}
@@ -36,178 +36,178 @@ void pySimilarityCore::getPath2(string Path2) {
 }
 
 float pySimilarityCore::doSimilarity_classify_gray_hist() {
-	// ¼ÓÔØº¯Êı
+	// åŠ è½½å‡½æ•°
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSimilarity_classify_gray_hist");
-	if (!pv || !PyCallable_Check(pv))  // ÑéÖ¤ÊÇ·ñ¼ÓÔØ³É¹¦
+	if (!pv || !PyCallable_Check(pv))  // éªŒè¯æ˜¯å¦åŠ è½½æˆåŠŸ
 	{
 		qDebug() << "[ERROR] Can't find funftion (doSimilarity_classify_gray_hist)" ;
 	}
 	qDebug() << "[INFO] Get function (doSimilarity_classify_gray_hist) succeed." ;
 
-	// ÉèÖÃ²ÎÊı
-	PyObject* args = PyTuple_New(2);   // 2¸ö²ÎÊı
-	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // ²ÎÊıÒ»
-	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // ²ÎÊı¶ş
+	// è®¾ç½®å‚æ•°
+	PyObject* args = PyTuple_New(2);   // 2ä¸ªå‚æ•°
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // å‚æ•°ä¸€
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // å‚æ•°äºŒ
 
 	PyTuple_SetItem(args, 0, arg1);
 	PyTuple_SetItem(args, 1, arg2);
 
-	// µ÷ÓÃº¯Êı
+	// è°ƒç”¨å‡½æ•°
 	PyObject* pRet = PyObject_CallObject(pv, args);
 
-	// »ñÈ¡²ÎÊı
+	// è·å–å‚æ•°
 	float result;
 	if (pRet) {
-		PyArg_Parse(pRet, "f", &result);//×ª»»³ÉfloatĞÍ±äÁ¿
-		qDebug() << "»ùÓÚ»Ò¶È»¯Ö±·½Í¼ÏàËÆ¶È:" << result ;
+		PyArg_Parse(pRet, "f", &result);//è½¬æ¢æˆfloatå‹å˜é‡
+		qDebug() << "åŸºäºç°åº¦åŒ–ç›´æ–¹å›¾ç›¸ä¼¼åº¦:" << result ;
 	}
 	else {
-		qDebug() << "»ñÈ¡Ê§°Ü" ;
+		qDebug() << "è·å–å¤±è´¥" ;
 	}
 	return result;
 }
 
 float pySimilarityCore::doSimilarity_classify_hist_with_split(){
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSimilarity_classify_hist_with_split");
-	if (!pv || !PyCallable_Check(pv))  // ÑéÖ¤ÊÇ·ñ¼ÓÔØ³É¹¦
+	if (!pv || !PyCallable_Check(pv))  // éªŒè¯æ˜¯å¦åŠ è½½æˆåŠŸ
 	{
 		qDebug() << "[ERROR] Can't find funftion (doSimilarity_classify_hist_with_split)" ;
 	}
 	qDebug() << "[INFO] Get function (doSimilarity_classify_hist_with_split) succeed." ;
 
-	// ÉèÖÃ²ÎÊı
-	PyObject* args = PyTuple_New(2);   // 2¸ö²ÎÊı
-	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // ²ÎÊıÒ»ÉèÎª4
-	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // ²ÎÊı¶şÉèÎª3
+	// è®¾ç½®å‚æ•°
+	PyObject* args = PyTuple_New(2);   // 2ä¸ªå‚æ•°
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // å‚æ•°ä¸€è®¾ä¸º4
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // å‚æ•°äºŒè®¾ä¸º3
 	PyTuple_SetItem(args, 0, arg1);
 	PyTuple_SetItem(args, 1, arg2);
 
-	// µ÷ÓÃº¯Êı
+	// è°ƒç”¨å‡½æ•°
 	PyObject* pRet = PyObject_CallObject(pv, args);
 
 	float result;
 	if (pRet) {
-		PyArg_Parse(pRet, "f", &result);//floatĞÍ±äÁ¿
-		qDebug() << "·ÖÀë¸÷Í¨µÀÖ±·½Í¼ºóµÄÏàËÆ¶È:" << result ;
+		PyArg_Parse(pRet, "f", &result);//floatå‹å˜é‡
+		qDebug() << "åˆ†ç¦»å„é€šé“ç›´æ–¹å›¾åçš„ç›¸ä¼¼åº¦:" << result ;
 	}
 	else {
-		qDebug() << "»ñÈ¡Ê§°Ü" ;
+		qDebug() << "è·å–å¤±è´¥" ;
 	}
 	return result;
 }
 
 int pySimilarityCore::doSimilarity_classify_aHash() {
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSimilarity_classify_aHash");
-	if (!pv || !PyCallable_Check(pv))  // ÑéÖ¤ÊÇ·ñ¼ÓÔØ³É¹¦
+	if (!pv || !PyCallable_Check(pv))  // éªŒè¯æ˜¯å¦åŠ è½½æˆåŠŸ
 	{
 		qDebug() << "[ERROR] Can't find funftion (doSimilarity_classify_aHash)" ;
 	}
 	qDebug() << "[INFO] Get function (doSimilarity_classify_aHash) succeed." ;
 
-	// ÉèÖÃ²ÎÊı
-	PyObject* args = PyTuple_New(2);   // 2¸ö²ÎÊı
-	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // ²ÎÊıÒ»
-	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // ²ÎÊı¶ş
+	// è®¾ç½®å‚æ•°
+	PyObject* args = PyTuple_New(2);   // 2ä¸ªå‚æ•°
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // å‚æ•°ä¸€
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // å‚æ•°äºŒ
 	PyTuple_SetItem(args, 0, arg1);
 	PyTuple_SetItem(args, 1, arg2);
 
-	// µ÷ÓÃº¯Êı
+	// è°ƒç”¨å‡½æ•°
 	PyObject* pRet = PyObject_CallObject(pv, args);
 
 	int result;
 	if (pRet) {
-		PyArg_Parse(pRet, "i", &result);//intĞÍ±äÁ¿
+		PyArg_Parse(pRet, "i", &result);//intå‹å˜é‡
 		qDebug() << "aHash:" << result ;
 	}
 	else {
-		qDebug() << "»ñÈ¡Ê§°Ü" ;
+		qDebug() << "è·å–å¤±è´¥" ;
 	}
 	return result;
 }
 
 int pySimilarityCore::doSimilarity_classify_pHash() {
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSimilarity_classify_pHash");
-	if (!pv || !PyCallable_Check(pv))  // ÑéÖ¤ÊÇ·ñ¼ÓÔØ³É¹¦
+	if (!pv || !PyCallable_Check(pv))  // éªŒè¯æ˜¯å¦åŠ è½½æˆåŠŸ
 	{
 		qDebug() << "[ERROR] Can't find funftion (doSimilarity_classify_pHash)" ;
 	}
 	qDebug() << "[INFO] Get function (doSimilarity_classify_pHash) succeed." ;
 
-	// ÉèÖÃ²ÎÊı
-	PyObject* args = PyTuple_New(2);   // 2¸ö²ÎÊı
-	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // ²ÎÊıÒ»
-	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // ²ÎÊı¶ş
+	// è®¾ç½®å‚æ•°
+	PyObject* args = PyTuple_New(2);   // 2ä¸ªå‚æ•°
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // å‚æ•°ä¸€
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // å‚æ•°äºŒ
 	PyTuple_SetItem(args, 0, arg1);
 	PyTuple_SetItem(args, 1, arg2);
 
-	// µ÷ÓÃº¯Êı
+	// è°ƒç”¨å‡½æ•°
 	PyObject* pRet = PyObject_CallObject(pv, args);
 
 	int result;
 	if (pRet) {
-		PyArg_Parse(pRet, "i", &result);//intĞÍ±äÁ¿
+		PyArg_Parse(pRet, "i", &result);//intå‹å˜é‡
 		qDebug() << "pHash:" << result ;
 	}
 	else {
-		qDebug() << "»ñÈ¡Ê§°Ü" ;
+		qDebug() << "è·å–å¤±è´¥" ;
 	}
 	return result;
 }
 
 int pySimilarityCore::doSift() {
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSift");
-	if (!pv || !PyCallable_Check(pv))  // ÑéÖ¤ÊÇ·ñ¼ÓÔØ³É¹¦
+	if (!pv || !PyCallable_Check(pv))  // éªŒè¯æ˜¯å¦åŠ è½½æˆåŠŸ
 	{
 		qDebug() << "[ERROR] Can't find funftion (doSift)";
 	}
 	qDebug() << "[INFO] Get function (doSift) succeed.";
 
-	// ÉèÖÃ²ÎÊı
-	PyObject* args = PyTuple_New(2);   // 2¸ö²ÎÊı
-	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // ²ÎÊıÒ»
-	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // ²ÎÊı¶ş
+	// è®¾ç½®å‚æ•°
+	PyObject* args = PyTuple_New(2);   // 2ä¸ªå‚æ•°
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // å‚æ•°ä¸€
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // å‚æ•°äºŒ
 	PyTuple_SetItem(args, 0, arg1);
 	PyTuple_SetItem(args, 1, arg2);
 
-	// µ÷ÓÃº¯Êı
+	// è°ƒç”¨å‡½æ•°
 	PyObject* pRet = PyObject_CallObject(pv, args);
 
 	int result;
 	if (pRet) {
-		PyArg_Parse(pRet, "i", &result);//intĞÍ±äÁ¿
-		qDebug() << "SiftÌØÕ÷Æ¥ÅäµãÊı:" << result;
+		PyArg_Parse(pRet, "i", &result);//intå‹å˜é‡
+		qDebug() << "Siftç‰¹å¾åŒ¹é…ç‚¹æ•°:" << result;
 	}
 	else {
-		qDebug() << "»ñÈ¡Ê§°Ü";
+		qDebug() << "è·å–å¤±è´¥";
 	}
 	return result;
 }
 
 int pySimilarityCore::doSurf() {
 	PyObject* pv = PyObject_GetAttrString(pModule, "doSurf");
-	if (!pv || !PyCallable_Check(pv))  // ÑéÖ¤ÊÇ·ñ¼ÓÔØ³É¹¦
+	if (!pv || !PyCallable_Check(pv))  // éªŒè¯æ˜¯å¦åŠ è½½æˆåŠŸ
 	{
 		qDebug() << "[ERROR] Can't find funftion (doSurf)";
 	}
 	qDebug() << "[INFO] Get function (doSurf) succeed.";
 
-	// ÉèÖÃ²ÎÊı
-	PyObject* args = PyTuple_New(2);   // 2¸ö²ÎÊı
-	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // ²ÎÊıÒ»
-	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // ²ÎÊı¶ş
+	// è®¾ç½®å‚æ•°
+	PyObject* args = PyTuple_New(2);   // 2ä¸ªå‚æ•°
+	PyObject* arg1 = Py_BuildValue("s", image1Path.c_str());    // å‚æ•°ä¸€
+	PyObject* arg2 = Py_BuildValue("s", image2Path.c_str());    // å‚æ•°äºŒ
 	PyTuple_SetItem(args, 0, arg1);
 	PyTuple_SetItem(args, 1, arg2);
 
-	// µ÷ÓÃº¯Êı
+	// è°ƒç”¨å‡½æ•°
 	PyObject* pRet = PyObject_CallObject(pv, args);
 
 	int result;
 	if (pRet) {
-		PyArg_Parse(pRet, "i", &result);//intĞÍ±äÁ¿
-		qDebug() << "SurfÌØÕ÷Æ¥ÅäµãÊı:" << result;
+		PyArg_Parse(pRet, "i", &result);//intå‹å˜é‡
+		qDebug() << "Surfç‰¹å¾åŒ¹é…ç‚¹æ•°:" << result;
 	}
 	else {
-		qDebug() << "»ñÈ¡Ê§°Ü";
+		qDebug() << "è·å–å¤±è´¥";
 	}
 	return result;
 }

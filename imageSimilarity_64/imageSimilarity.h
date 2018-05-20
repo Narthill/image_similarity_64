@@ -46,9 +46,9 @@ private:
 	QImage srcQimage;
 	QFileInfoList list;
 	vector<imageInfo*> imagelibs;
-	int imageCount;//Í¼Æ¬¿â×ÜÁ¿
-	int pageNum;//Ò³Êı
-	int nowPage;//µ±Ç°Ò³
+	int imageCount;//å›¾ç‰‡åº“æ€»é‡
+	int pageNum;//é¡µæ•°
+	int nowPage;//å½“å‰é¡µ
 	QString path;
 
 	string p1;

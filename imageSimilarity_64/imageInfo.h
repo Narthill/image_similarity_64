@@ -8,7 +8,7 @@ public:
 	imageInfo(const imageInfo& info);
 	~imageInfo();
 
-	//imageInfo operator =(const imageInfo& info);//ÖØÔØµÈºÅ£¬ÓÃÒÔstringÉî¿½±´
+	//imageInfo operator =(const imageInfo& info);//é‡è½½ç­‰å·ï¼Œç”¨ä»¥stringæ·±æ‹·è´
 
 	void setClassify_gray_hist(float);
 	void setClassify_hist_with_split(float);

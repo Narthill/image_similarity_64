@@ -9,10 +9,10 @@ imageInfo::imageInfo(const imageInfo& info) {
 imageInfo::~imageInfo()
 {
 }
-imageInfo imageInfo::operator =(const imageInfo& info) {
-	/*this->path = info.path;
-	return *this;*/
-}
+//imageInfo imageInfo::operator =(const imageInfo& info) {
+//	/*this->path = info.path;
+//	return *this;*/
+//}
 void imageInfo::setPath(string p) {
 	path = p;
 }

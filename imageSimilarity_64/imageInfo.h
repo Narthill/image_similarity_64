@@ -8,7 +8,7 @@ public:
 	imageInfo(const imageInfo& info);
 	~imageInfo();
 
-	imageInfo operator =(const imageInfo& info);//重载等号，用以string深拷贝
+	//imageInfo operator =(const imageInfo& info);//重载等号，用以string深拷贝
 
 	void setClassify_gray_hist(float);
 	void setClassify_hist_with_split(float);

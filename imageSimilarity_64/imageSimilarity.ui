@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1116</width>
-    <height>737</height>
+    <width>1127</width>
+    <height>791</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,5">
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,0,0,2">
              <item>
               <widget class="QComboBox" name="comboBox">
                <item>
@@ -81,6 +81,20 @@
                  <string>surf特征匹配</string>
                 </property>
                </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_sift">
+               <property name="text">
+                <string>是否匹配sift特征</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="checkBox_surf">
+               <property name="text">
+                <string>是否匹配surf特征</string>
+               </property>
               </widget>
              </item>
              <item>
@@ -215,7 +229,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1116</width>
+     <width>1127</width>
      <height>23</height>
     </rect>
    </property>

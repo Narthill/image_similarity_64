@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGroupBox>
@@ -50,6 +51,8 @@ public:
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_4;
     QComboBox *comboBox;
+    QCheckBox *checkBox_sift;
+    QCheckBox *checkBox_surf;
     QSpacerItem *horizontalSpacer_3;
     QTextEdit *textEdit;
     QGroupBox *groupBox;
@@ -74,7 +77,7 @@ public:
     {
         if (imageSimilarityClass->objectName().isEmpty())
             imageSimilarityClass->setObjectName(QStringLiteral("imageSimilarityClass"));
-        imageSimilarityClass->resize(1116, 737);
+        imageSimilarityClass->resize(1127, 791);
         actionOpen = new QAction(imageSimilarityClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         action2 = new QAction(imageSimilarityClass);
@@ -126,10 +129,22 @@ public:
 
         horizontalLayout_4->addWidget(comboBox);
 
+        checkBox_sift = new QCheckBox(frame);
+        checkBox_sift->setObjectName(QStringLiteral("checkBox_sift"));
+
+        horizontalLayout_4->addWidget(checkBox_sift);
+
+        checkBox_surf = new QCheckBox(frame);
+        checkBox_surf->setObjectName(QStringLiteral("checkBox_surf"));
+
+        horizontalLayout_4->addWidget(checkBox_surf);
+
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_4->addItem(horizontalSpacer_3);
 
+        horizontalLayout_4->setStretch(0, 1);
+        horizontalLayout_4->setStretch(3, 2);
 
         verticalLayout_3->addLayout(horizontalLayout_4);
 
@@ -225,7 +240,7 @@ public:
         imageSimilarityClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(imageSimilarityClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1116, 23));
+        menuBar->setGeometry(QRect(0, 0, 1127, 23));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu_2 = new QMenu(menuBar);
@@ -267,6 +282,8 @@ public:
          << QApplication::translate("imageSimilarityClass", "sift\347\211\271\345\276\201\345\214\271\351\205\215", Q_NULLPTR)
          << QApplication::translate("imageSimilarityClass", "surf\347\211\271\345\276\201\345\214\271\351\205\215", Q_NULLPTR)
         );
+        checkBox_sift->setText(QApplication::translate("imageSimilarityClass", "\346\230\257\345\220\246\345\214\271\351\205\215sift\347\211\271\345\276\201", Q_NULLPTR));
+        checkBox_surf->setText(QApplication::translate("imageSimilarityClass", "\346\230\257\345\220\246\345\214\271\351\205\215surf\347\211\271\345\276\201", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("imageSimilarityClass", "\347\233\270\344\274\274\345\233\276", Q_NULLPTR));
         label->setText(QString());
         label_2->setText(QString());
